@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    
+    <bean id="cinema" class="entity.Cinema"></bean>
+    
+    <bean id="movie1" class="entity.Movie">
+    	<property name="movieName" value="泰坦尼克"></property>
+    	<property name="movieType" value="爱情"></property>
+    </bean>
+    <bean id="movie2" class="entity.Movie">
+    	<property name="movieName" value="变形金刚"></property>
+    	<property name="movieType" value="科幻"></property>
+    	<property name="series" value="6"></property>
+    </bean>
+    <bean id="movie3" class="entity.Movie">
+    	<property name="movieName" value="咒怨"></property>
+    	<property name="movieType" value="恐怖"></property>
+    	<property name="series" value="1"></property>
+    </bean>
+    
+    <bean id="audience1" class="entity.Audience"></bean>
+    <bean id="audience2" class="entity.Audience"></bean>
+    <bean id="audience3" class="entity.Audience"></bean>
+    
+    <aop:config>
+    	<aop:pointcut id="pointcut1" expression="execution(* entity.Cinema.showTheMovie(..))"/>
+    	<aop:pointcut id="pointcut2" expression="execution(* entity.Cinema.showTheMovie(String))"/>
+    	<aop:pointcut id="pointcut3" expression="execution(* entity.Cinema.showTheMovie(Movie))"/>
+    	<aop:aspect ref="audience1">
+    		<aop:before method="enter" pointcut-ref="pointcut1"/>
+    		<aop:after-returning method="leave" pointcut-ref="pointcut1"/>
+    		<aop:around method="around" pointcut-ref="pointcut2"/>
+    	</aop:aspect>
+    </aop:config>
+</beans>
